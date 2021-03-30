@@ -19,9 +19,9 @@ public class Main {
 		
 		while(true) {
 			
-			putText("Enter weight");
+			putText("Enter weight in terms of pound");
 			double weight = getDouble();
-			putText("Enter name");
+			putText("Enter product description");
 			String name = getString();
 			putText("Enter zone");
 			String zone = getString();
@@ -39,7 +39,7 @@ public class Main {
 	}
 	
 	  private static void printLowest(Carrier carrier) {
-		  System.out.println(carrier.name + " " + carrier.getLowestRateCarrier().rate + " " + carrier.getLowestRateCarrier().getClass().toString());
+		  System.out.println(carrier.description + " " + getLowestRateCarrier(carrier).rate + " " + getLowestRateCarrier(carrier).getClass().toString());
 		
 	}
 
@@ -63,15 +63,23 @@ public class Main {
       }
 
 
-//	public static double calculateLowestPrice(double weight, String zone, String description) {
-//		Carrier fedEx = new FedEx(2,"IA","Book");
-//		Carrier uPS = new UPS(2,"IA","Book");
-//		Carrier uSMail = new USMail(2,"IA","Book");
-//		
-//		
-//		fedEx.calculateRate(), uPS.calculateRate(), uSMail.calculateRate()
-//		
-//	}
+	  
+	  static Carrier getLowestRateCarrier(Carrier carrier) {
+		  double weight = carrier.weight;
+		  String zone = carrier.zone; 
+		  String description = carrier.description;
+		  FedEx fedex;
+			UPS ups;
+			USMail usMail;
+			fedex = new FedEx(weight, zone, description);
+			ups = new UPS(weight, zone, description);
+			usMail = new USMail(weight, zone, description);
+			carrier=fedex.calculateRate()<ups.calculateRate()?fedex:ups; 
+			
+			carrier=usMail.calculateRate()<carrier.calculateRate()?usMail:carrier;
+			
+			return carrier;
+		}
 
 
 }
